@@ -1,0 +1,30 @@
+{
+  "updated_at": "2026-05-24T19:08:47.446519",
+  "platforms": {
+    "slack": [
+      {
+        "id": "C0B5YE4D812",
+        "name": "헤르메스",
+        "type": "private"
+      }
+    ],
+    "telegram": [],
+    "discord": [],
+    "whatsapp": [],
+    "signal": [],
+    "mattermost": [],
+    "matrix": [],
+    "homeassistant": [],
+    "email": [],
+    "sms": [],
+    "dingtalk": [],
+    "msgraph_webhook": [],
+    "feishu": [],
+    "wecom": [],
+    "wecom_callback": [],
+    "weixin": [],
+    "bluebubbles": [],
+    "qqbot": [],
+    "yuanbao": []
+  }
+}

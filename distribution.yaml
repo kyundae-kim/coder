@@ -1,0 +1,14 @@
+name: coder
+version: 1.0.0
+description: "An agent profile for coding tasks, optimized for code generation, understanding, and debugging."
+hermes_requires: ">=0.14.0"
+author: aman
+license: "MIT"
+
+# Tell installers which env vars the agent needs. These are checked against
+# the installer's shell and existing .env file so they don't get nagged
+# about keys they already have configured.
+env_requires:
+  - name: COPILOT_GITHUB_TOKEN
+    description: "GitHub Copilot token (for model access)"
+    required: true
