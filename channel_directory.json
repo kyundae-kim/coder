@@ -1,11 +1,23 @@
 {
-  "updated_at": "2026-05-24T19:08:47.446519",
+  "updated_at": "2026-05-25T17:07:35.356342",
   "platforms": {
     "slack": [
       {
         "id": "C0B5YE4D812",
         "name": "헤르메스",
         "type": "private"
+      },
+      {
+        "id": "C0B5YE4D812:1779617339.487809",
+        "name": "C0B5YE4D812 / topic 1779617339.487809",
+        "type": "group",
+        "thread_id": "1779617339.487809"
+      },
+      {
+        "id": "C0B5YE4D812:1779693914.984549",
+        "name": "C0B5YE4D812 / topic 1779693914.984549",
+        "type": "group",
+        "thread_id": "1779693914.984549"
       }
     ],
     "telegram": [],

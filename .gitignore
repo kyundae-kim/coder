@@ -7,3 +7,7 @@ logs/
 workspace/
 *_cache/
 local/
+.clean_shutdown
+.skills_prompt_snapshot.json
+channel_directory.json
+gateway_state.json
