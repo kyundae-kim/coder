@@ -304,6 +304,7 @@ skills:
   inline_shell: false
   inline_shell_timeout: 10
   guard_agent_created: false
+  disabled: []
 curator:
   enabled: true
   interval_hours: 168
