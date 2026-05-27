@@ -11,3 +11,9 @@ local/
 .skills_prompt_snapshot.json
 channel_directory.json
 gateway_state.json
+.hermes_history
+.update_check
+config.yaml.bak.*
+models_dev_cache.json
+.usage.json
+.cache/

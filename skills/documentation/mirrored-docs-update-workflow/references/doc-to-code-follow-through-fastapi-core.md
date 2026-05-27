@@ -25,6 +25,12 @@
 - Readiness docs -> code:
   - Added `HealthSettings` under `ServiceSettings`
   - `/health/readiness` checks Keycloak + DB + MinIO with per-check toggles and 503 detail mapping
+- NATS messaging docs -> code:
+  - Added `NatsConfig` model to `config.py` with `server_list` property (comma-split)
+  - Added `EnvConfig.nats: NatsConfig` field
+  - Created `fastapi_core/core/messaging.py`: `create_nats_client`, `publish_json`, `subscribe_json`
+  - Created `fastapi_core/dependencies/messaging.py`: `set_nats_client` (async), `get_nats_client`
+  - Pattern mirrors storage dependency exactly: set with direct client or config, get raises RuntimeError if not initialized
 
 ## Test design notes
 - Unit tests:
@@ -33,9 +39,30 @@
   - Assert session dependency closes session.
   - Assert presigned URL helper methods call MinIO client with proper HTTP verb.
   - Assert readiness failure branches for DB/MinIO with expected detail strings.
+  - Assert NATS connect called with correct args (servers as list, reconnect_time_wait in seconds not ms).
+  - Assert publish_json serializes to UTF-8 bytes.
+  - Assert subscribe_json passes internal handler that deserializes JSON before calling cb.
+  - Assert set_nats_client raises ValueError when both client and config are None.
+  - Assert get_nats_client raises RuntimeError when nats_client not in app.state.
+
+## Async test pattern (IMPORTANT)
+- This project does NOT use pytest-asyncio. Use `anyio.run(async_fn)` directly in sync test methods.
+- Pattern:
+  ```python
+  import anyio
+
+  class TestFoo:
+      def test_something_async(self):
+          mock_client = AsyncMock()
+          async def run():
+              await some_async_fn(mock_client)
+          anyio.run(run)
+          mock_client.method.assert_awaited_once()
+  ```
+- Do NOT use `@pytest.mark.asyncio` — it will silently skip or error without pytest-asyncio installed.
 - Integration tests:
   - DB: validate `get_db_session` + `run_in_transaction` with `SELECT 1`.
   - MinIO: validate presigned URL generation returns URL-like strings.
 
 ## Outcome verification example
-- `uv run pytest -q` result in this session: `79 passed, 23 deselected`.
+- `uv run pytest -q` result in this session: `93 passed, 4 warnings` (non-integration suite).

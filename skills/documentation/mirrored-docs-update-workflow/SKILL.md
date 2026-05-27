@@ -37,6 +37,7 @@ description: Update product/API/config docs in repositories that keep duplicate 
    - Ensure “planned” markers are consistent anywhere behavior is not implemented yet.
 
 ## Pitfalls
+- **Async test framework mismatch**: This project uses `anyio` (not pytest-asyncio). Use `anyio.run(async_fn)` inside sync test methods. `@pytest.mark.asyncio` silently fails without the plugin installed.
 - **Ambiguous patch hunks in large markdown files**: broad multi-hunk patching can fail when repeated headings/tables exist. Use narrower unique replacements or stepwise edits.
 - **Partial-read overwrite risk**: if file was read in paginated chunks, avoid full overwrite unless you re-read complete content.
 - **Spec drift**: updating PRD/API only and forgetting README/config (or mirror path) causes user-visible inconsistency.
