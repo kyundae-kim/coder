@@ -43,7 +43,8 @@ description: Update product/API/config docs in repositories that keep duplicate 
 - **Spec drift**: updating PRD/API only and forgetting README/config (or mirror path) causes user-visible inconsistency.
 - **Test-doc drift after code/test changes**: `docs/test.md` is easy to miss; if tests were added or semantics changed, update both summary tables and detailed test-case sections in the same pass.
 - **Layout mode confusion after normalization**: once the user switches to single-tree docs (`/docs/*` only), stop mirroring/copying into package docs paths and only update canonical docs.
-- **Doc-first follow-through gap**: when the user immediately asks to implement newly documented features, treat docs as source of truth and update code + tests in one pass (don’t stop at docs).
+- **Doc-first follow-through gap**: when the user immediately asks to implement newly documented features, treat docs as source of truth and update code + tests in one pass (don't stop at docs).
+- **ORM model split**: when docs mandate moving ORM models from `services/*.py` to a `models/` package, remember to (a) import the model in `alembic/env.py` so `autogenerate` picks it up, (b) keep `Base.metadata.create_all()` in the service for dev env only, and (c) verify with `uv run python -m pytest -q` before declaring done. See `references/sqlalchemy-models-alembic-refactor.md` for the full template.
 
 ## Minimal completion checklist
 - [ ] PRD updated with requested feature scope
@@ -60,3 +61,4 @@ description: Update product/API/config docs in repositories that keep duplicate 
 - `references/fastapi-core-doc-sync-example.md` — concrete example of dual-tree doc updates (readiness + DB/storage enhancements) and wording conventions.
 - `references/single-tree-docs-normalization.md` — how to convert duplicated docs layout to canonical `/docs` only and update links safely.
 - `references/doc-to-code-follow-through-fastapi-core.md` — pattern for implementing newly documented features immediately in code + tests (config/core/dependencies/routers + verification).
+- `references/sqlalchemy-models-alembic-refactor.md` — step-by-step pattern for splitting ORM models out of service files into `models/base.py` + `models/<entity>.py`, and wiring Alembic `env.py` with env-var DB URL support.

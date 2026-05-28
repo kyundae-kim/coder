@@ -17,3 +17,4 @@ config.yaml.bak.*
 models_dev_cache.json
 .usage.json
 .cache/
+pastes/
