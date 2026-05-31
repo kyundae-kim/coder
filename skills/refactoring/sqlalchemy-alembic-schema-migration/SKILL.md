@@ -84,7 +84,35 @@ op.drop_table('source_table')
 - `not score` 대신 `score == 0` 명시 — int 0은 falsy이므로 의도치 않은 필터 방지
 - sort key: `key=lambda x: x.score_jadb` (단순 int)
 
+## Alembic 실행 전 필수 설정
+
+### alembic.ini sqlalchemy.url 확인
+`alembic.ini`의 기본값은 `driver://user:pass@localhost/dbname` 플레이스홀더임.
+반드시 실제 DB URL로 교체해야 `NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:driver` 에러를 방지.
+
+실제 URL은 `.streamlit/secrets.toml` 또는 `.devcontainer/.env`에서 확인:
+```
+# .streamlit/secrets.toml 예시
+[connections.javdb_dev]
+url = "mariadb+mariadbconnector://user:password@db:3306/mydatabase"
+```
+
+`alembic.ini`에 반영:
+```ini
+sqlalchemy.url = mariadb+mariadbconnector://user:password@db:3306/mydatabase
+```
+
+### DB에 테이블이 이미 존재하지만 alembic 버전 추적이 없는 경우
+`alembic upgrade head` 시 init revision의 CREATE TABLE이 실패(`Table 'xxx' already exists`).
+→ init revision을 실행하지 말고 stamp로 현재 상태 마킹 후 진행:
+```bash
+alembic stamp <init_revision_id>   # 예: alembic stamp 50b410cb63e7
+alembic upgrade head               # 이후 revision부터 실행됨
+```
+
 ## 검증 체크리스트
+- [ ] `alembic.ini`의 `sqlalchemy.url` 플레이스홀더 교체 여부 확인
+- [ ] DB에 alembic_version 테이블 존재 여부 확인 — 없으면 stamp 먼저
 - [ ] 삭제한 ORM/DTO 클래스명 grep → 0건
 - [ ] lint OK (write_file / patch 자동 체크)
-- [ ] `alembic upgrade head` dry-run 또는 실행
+- [ ] `alembic upgrade head` 실행 성공 확인
